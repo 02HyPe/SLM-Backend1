@@ -4,6 +4,7 @@ const Leave = require(`../config/mongoose.model`).leaveModel;
 const bcrypt = require(`bcryptjs`);
 const { validationResult } = require(`express-validator`);
 const logger = global.logger;
+// changes
 
 const registerFormData = async (req, res, next) => {
   try {
@@ -103,10 +104,10 @@ const createUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    logger.info("IN USER UPDATE FUNCTION")
+    logger.info("IN USER UPDATE FUNCTION");
     const body = req.body;
 
-    logger.info("user",req.params.user_id)
+    logger.info("user", req.params.user_id);
     const user = await User.findById(body.user_id);
     let updatedUser;
     const mentorUser = await User.findById(body.mentorId);
@@ -134,7 +135,7 @@ const updateUser = async (req, res, next) => {
         }
       );
 
-      logger.info(updatedUser,"--- updated User");
+      logger.info(updatedUser, "--- updated User");
       return res.status(200).json("user Updated successfully");
     } else if (user.type === "Moderator") {
       const result = await User.findOneAndUpdate(
@@ -250,7 +251,7 @@ const displayUserType = async (req, res, next) => {
 const userDetails = async (req, res, next) => {
   try {
     const userResult = await User.findById(req.user_id);
-    logger.info(userResult)
+    logger.info(userResult);
     const mentor = await User.findById(userResult.mentor._id);
     const type = req.userType;
     const userInfo = {
@@ -273,7 +274,8 @@ const userDetails = async (req, res, next) => {
       userInfo["course"] = userResult.course;
       userInfo["division"] = userResult.division;
       userInfo["year"] = userResult.year;
-      userInfo["batch"] = userResult.year+userResult.department+"-"+userResult.division;
+      userInfo["batch"] =
+        userResult.year + userResult.department + "-" + userResult.division;
     }
     logger.info("user profile", userInfo);
     return res.status(200).json(userInfo);
